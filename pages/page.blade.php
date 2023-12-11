@@ -1,4 +1,1 @@
-@extends('themes::layouts.master')
-
-@section('content')
-@endsection
+<x-tomato-builder-toolbar :page="$page" />

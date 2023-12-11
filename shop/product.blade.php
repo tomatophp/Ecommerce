@@ -36,7 +36,24 @@
                 <div class="grid grid-cols-12 gap-4 mx-4">
                     <!-- Image gallery -->
                     <div class="mt-4 flex justify-center col-span-12 lg:col-span-5">
-                        <x-tomato-admin-slider horizontal type="gallery" class="w-full h-80" :images="$product->getMedia('images')->map(fn($item) => $item->getUrl())->toArray() ?: [$product->getMedia('featured_image')->first()?->getUrl() ?: url('placeholder.webp')]" :items="1" />
+                        @php
+                            $images = $product->getMedia('images')->map(fn($item) => $item->getUrl())->toArray() ?: [$product->getMedia('featured_image')->first()?->getUrl() ?: url('placeholder.webp')];
+                            $imagesTM = $product->getMedia('images')->map(fn($item) => $item->getUrl())->toArray();
+                        @endphp
+                        <x-tomato-admin-slider
+                            class="w-full h-80"
+                            :images="$imagesTM ?? []"
+                        >
+                            @foreach($images as $image)
+                                <x-tomato-admin-slider-item zoom>
+                                    <div class="flex justify-center">
+                                        <div class=" w-80 h-80">
+                                            <img src="{{$image}}"  class="object-contain" />
+                                        </div>
+                                    </div>
+                                </x-tomato-admin-slider-item>
+                            @endforeach
+                        </x-tomato-admin-slider>
                     </div>
                     @php
                         $loadKeys = [];

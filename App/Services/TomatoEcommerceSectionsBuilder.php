@@ -2,14 +2,14 @@
 
 namespace Themes\Ecommerce\App\Services;
 
-use Themes\Ecommerce\App\Sections\TomatoCategorySection;
-use Themes\Ecommerce\App\Sections\TomatoFeatureSection;
-use Themes\Ecommerce\App\Sections\TomatoFooterSection;
-use Themes\Ecommerce\App\Sections\TomatoHeaderSection;
-use Themes\Ecommerce\App\Sections\TomatoHeroSection;
-use Themes\Ecommerce\App\Sections\TomatoProductsSection;
 use TomatoPHP\TomatoCms\Facades\TomatoCMS;
 use TomatoPHP\TomatoForms\Facades\TomatoForms;
+use TomatoPHP\TomatoSections\Sections\TomatoCategorySection;
+use TomatoPHP\TomatoSections\Sections\TomatoFeatureSection;
+use TomatoPHP\TomatoSections\Sections\TomatoFooterSection;
+use TomatoPHP\TomatoSections\Sections\TomatoHeaderSection;
+use TomatoPHP\TomatoSections\Sections\TomatoHeroSection;
+use TomatoPHP\TomatoSections\Sections\TomatoProductsSection;
 use TomatoPHP\TomatoThemes\Facades\TomatoThemes;
 
 class TomatoEcommerceSectionsBuilder
