@@ -13,6 +13,11 @@
             <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6 ">
                 <div class="mt-8">
                     <div class="flow-root">
+                        <div class="my-4 w-full">
+                            <x-tomato-admin-button confirm danger method="POST" href="{{route('cart.clear')}}">
+                                {{__('Clear All Cart Items')}}
+                            </x-tomato-admin-button>
+                        </div>
                         <ul role="list" class="-my-6 divide-y divide-gray-200">
                             @foreach($carts as $cart)
                                 <li class="flex py-6">
@@ -36,7 +41,7 @@
                                             </p>
                                         </div>
                                         <div class="flex flex-1 items-end justify-between text-sm">
-                                            <x-splade-form method="POST" action="{{route('cart.update', $cart->id)}}" class="flex justify-start gap-2" :default="$cart" submit-on-change>
+                                            <x-splade-form preserve-scroll method="POST" action="{{route('cart.update', $cart->id)}}" class="flex justify-start gap-2" :default="$cart" submit-on-change>
                                                 <x-splade-input name="qty" type="hidden"/>
                                                 <button @click.prevent="form.qty++">+</button>
                                                 <p class="text-gray-500">{{__('Qty')}} {{$cart->qty}}</p>

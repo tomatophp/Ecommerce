@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use TomatoPHP\TomatoEcommerce\Models\Cart;
@@ -33,13 +34,7 @@ class CheckoutController extends Controller
     }
 
     public function index(){
-        if(auth('accounts')->user()){
-            $carts = Cart::where('account_id', auth('accounts')->user()->id)->get();
-        }
-        else {
-            $carts = Cart::where('session_id', session()->getId())->get();
-        }
-
+        $carts = Cart::where('session_id', Cookie::get('cart'))->get();
         $shippers = ShippingVendor::where('is_activated', 1)->get();
 
 
@@ -71,20 +66,7 @@ class CheckoutController extends Controller
      */
     public function cart(Request $request): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
     {
-        if(auth('accounts')->user()){
-            $request->merge([
-                'account_id' => auth('accounts')->user()->id
-            ]);
-        }
-        else {
-            $request->merge([
-                'session_id' => session()->getId()
-            ]);
-        }
-
-        $carts = Cart::where('session_id', $request->get('session_id'))
-            ->where('account_id', $request->get('account_id'))
-            ->get();
+        $carts = Cart::where('session_id', Cookie::get('cart'))->get();
 
         return view('themes::checkout.cart', compact('carts'));
     }
@@ -96,6 +78,10 @@ class CheckoutController extends Controller
      */
     public function store(Request $request): RedirectResponse|JsonResponse
     {
+        if(!Cookie::has('cart')){
+            Cookie::forever('cart', session()->getId());
+        }
+
         $cart = TomatoEcommerce::store($request);
 
         if(is_string($cart)){
@@ -127,13 +113,15 @@ class CheckoutController extends Controller
      */
     public function destroy(\TomatoPHP\TomatoEcommerce\Models\Cart $cart): RedirectResponse
     {
-        Cart::where('session_id', session()->getId())->orWhere('id', $cart->id)->delete();
+        Cart::where('session_id', Cookie::get('cart'))->orWhere('id', $cart->id)->delete();
+
         Toast::success(__('Cart deleted successfully'))->autoDismiss(2);
         return redirect()->back();
     }
 
     public function clear(){
-        Cart::where('session_id', session()->getId())->delete();
+        Cart::where('session_id', Cookie::get('cart'))->delete();
+
         Toast::success(__('Cart cleared successfully'))->autoDismiss(2);
         return redirect()->back();
     }
