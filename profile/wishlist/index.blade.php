@@ -14,7 +14,7 @@
             </div>
 
             <div class="my-4">
-                {!! $products->links('themes::sections.home.pagination') !!}
+                {!! $products->links('tomato-sections::sections.pagination') !!}
             </div>
         @else
             <div>
