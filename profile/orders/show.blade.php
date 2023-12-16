@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="border rounded-lg p-4 mx-4 mb-4">
-        @php $company = \TomatoPHP\TomatoOrders\Models\Branch::find(setting('ordering_web_branch'))?->company @endphp
+        @php $company = \TomatoPHP\TomatoBranches\Models\Branch::find(setting('ordering_web_branch'))?->company @endphp
 
         <div class="flex justify-between xl:gap-60 lg:gap-48 md:gap-16 sm:gap-8 sm:flex-row flex-col gap-4">
             <div class="w-full">
