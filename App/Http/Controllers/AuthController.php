@@ -27,6 +27,10 @@ class AuthController extends Controller
 
     public function login(){
         if(!auth('accounts')->user()){
+            if(!session()->has('url.intended'))
+            {
+                session(['url.intended' => url()->previous()]);
+            }
             return view('themes::auth.login');
         }
 
@@ -40,7 +44,7 @@ class AuthController extends Controller
         );
         if($login->success){
             Toast::success($login->message)->autoDismiss(2);
-            return redirect()->route('profile.index');
+            return redirect()->to(session('url.intended'));
         }
         else {
             if($login->message === __("Your account is not active yet")){
