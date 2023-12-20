@@ -113,7 +113,7 @@ class CheckoutController extends Controller
      */
     public function destroy(\TomatoPHP\TomatoEcommerce\Models\Cart $cart): RedirectResponse
     {
-        Cart::where('session_id', Cookie::get('cart'))->orWhere('id', $cart->id)->delete();
+        Cart::where('session_id', Cookie::get('cart'))->where('id', $cart->id)->delete();
 
         Toast::success(__('Cart deleted successfully'))->autoDismiss(2);
         return redirect()->back();
