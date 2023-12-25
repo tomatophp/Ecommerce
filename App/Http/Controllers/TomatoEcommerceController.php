@@ -21,6 +21,13 @@ class TomatoEcommerceController extends Controller
     public function index()
     {
         $page = Page::where('slug', '/')->first();
+        if(!$page){
+            $page = new Page();
+            $page->title = 'Home';
+            $page->slug = '/';
+            $page->is_active = true;
+            $page->save();
+        }
         return view('themes::index', compact('page'));
     }
 
@@ -107,17 +114,29 @@ class TomatoEcommerceController extends Controller
     }
 
     public function faq(Request $request){
-        $page = Page::where('slug', 'faq')->first();
-        $questions = Question::query();
+        if(class_exists(\TomatoPHP\TomatoSupport\Models\Question::class)){
+            $page = Page::where('slug', 'faq')->first();
+            if(!$page){
+                $page = new Page();
+                $page->title = 'FAQ';
+                $page->slug = '/faq';
+                $page->is_active = true;
+                $page->save();
+            }
+            $questions = Question::query();
 
-        if($request->has('search')){
-            $questions->where('qa', 'like', "%{$request->get('search')}%");
-        }
+            if($request->has('search')){
+                $questions->where('qa', 'like', "%{$request->get('search')}%");
+            }
 
-        $questions = $questions->paginate(12);
+            $questions = $questions->paginate(12);
 
-        if($page){
-            return view('themes::pages.faq', compact('questions', 'page'));
+            if($page){
+                return view('themes::pages.faq', compact('questions', 'page'));
+            }
+            else {
+                return redirect()->to('/');
+            }
         }
         else {
             return redirect()->to('/');

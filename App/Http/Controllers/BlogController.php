@@ -12,7 +12,14 @@ use TomatoPHP\TomatoCms\Models\Post;
 class BlogController extends Controller
 {
     public function index(Request $request){
-        $page = Page::where('slug', 'blog')->first();
+        $page = Page::where('slug', '/blog')->first();
+        if(!$page){
+            $page = new Page();
+            $page->title = 'Blog';
+            $page->slug = '/blog';
+            $page->is_active = true;
+            $page->save();
+        }
 
         $posts = Post::query();
         if ($request->has('search')) {
