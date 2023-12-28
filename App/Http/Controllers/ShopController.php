@@ -74,12 +74,7 @@ class ShopController extends Controller
         $products = $products->paginate(9);
         $categories = Category::where('for', 'product-categories')->where('menu', true)->where('activated', true)->get();
 
-        if($page){
-            return view('themes::shop.index-dynamic', compact('products', 'categories', 'options', 'page'));
-        }
-        else {
-            return view('themes::shop.index', compact('products', 'categories', 'options'));
-        }
+        return view('themes::index', compact('products', 'categories', 'options', 'page'));
     }
 
     public function product($slug){

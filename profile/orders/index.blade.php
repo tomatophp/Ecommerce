@@ -1,6 +1,6 @@
-@extends('themes::layouts.profile')
+@extends('themes::layouts.master')
 
-@section('body')
+@section('content')
     <div class="px-8 py-4">
         <div class="flex justify-between items-center my-4">
             <h1 class="text-2xl font-bold">{{__('Orders')}}</h1>
@@ -32,7 +32,6 @@
                             <x-heroicon-s-eye class="h-6 w-6"/>
                         </x-tomato-admin-button>
                     </x-tomato-admin-tooltip>
-
                 </div>
             </x-splade-cell>
         </x-splade-table>

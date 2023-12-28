@@ -35,10 +35,11 @@
             <div class="pt-6">
                 <div class="grid grid-cols-12 gap-4 mx-4">
                     <!-- Image gallery -->
-                    <div class="mt-4 flex justify-center col-span-12 lg:col-span-5">
+                    <div class="mt-4 flex justify-center col-span-12 lg:col-span-5 sticky top-10 h-80">
                         @php
-                            $images = $product->getMedia('images')->map(fn($item) => $item->getUrl())->toArray() ?: [$product->getMedia('featured_image')->first()?->getUrl() ?: url('placeholder.webp')];
-                            $imagesTM = $product->getMedia('images')->map(fn($item) => $item->getUrl())->toArray();
+                            $getImages = $product->getMedia('images')->map(fn($item) => $item->getUrl())->toArray();
+                            $images =  $getImages ?: [$product->getMedia('featured_image')->first()?->getUrl() ?: url('placeholder.webp')];
+                            $imagesTM = $getImages;
                         @endphp
                         <x-tomato-admin-slider
                             class="w-full h-80"
@@ -127,7 +128,7 @@
                                                              @endfor
                                                          </div>
                                                          <p class="sr-only">{{$product->rate}} {{__('out of 5 stars')}}</p>
-                                                         <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                                         <a href="#" class="ml-3 text-sm font-medium text-primary-600 hover:text-primary-500">
                                                              117 {{__('reviews')}}
                                                          </a>
                                                      </div>
@@ -160,7 +161,7 @@
                                                                  <h3 class="text-sm font-medium text-gray-900">{{ \Illuminate\Support\Str::of($key)->title() }}</h3>
 
                                                                  @if(\Illuminate\Support\Str::of($key)->contains('size'))
-                                                                     <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Size guide</a>
+                                                                     <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-500">Size guide</a>
                                                                  @endif
                                                              </div>
 
@@ -168,10 +169,10 @@
                                                                  <legend class="sr-only">{{ \Illuminate\Support\Str::of($key)->title() }}</legend>
                                                                  <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
                                                                      @foreach($options as $option)
-                                                                         <!-- Active: "ring-2 ring-indigo-500" -->
-                                                                         <button @click.prevent="form.{{$key}} = '{{$option}}';data.{{$key}} = '{{$option}}'" v-bind:class="{'ring-2 ring-indigo-500' : form.{{$key}} === '{{$option}}'}" class="p-1  group relative flex items-center justify-center rounded-md border text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer bg-white text-gray-900 shadow-sm">
+                                                                         <!-- Active: "ring-2 ring-primary-500" -->
+                                                                         <button @click.prevent="form.{{$key}} = '{{$option}}';data.{{$key}} = '{{$option}}'" v-bind:class="{'ring-2 ring-primary-500' : form.{{$key}} === '{{$option}}'}" class="p-1  group relative flex items-center justify-center rounded-md border text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 cursor-pointer bg-white text-gray-900 shadow-sm">
                                                                              <span id="size-choice-1-label" >{{\Illuminate\Support\Str::of($option)->title()}}</span>
-                                                                             <span v-bind:class="{'border-indigo-500' : form['{{$key}}'] === '{{$option}}'}" class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
+                                                                             <span v-bind:class="{'border-primary-500' : form['{{$key}}'] === '{{$option}}'}" class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
                                                                          </button>
                                                                      @endforeach
                                                                  </div>
@@ -184,28 +185,30 @@
                                                      <x-tomato-admin-submit v-if="{{ $ifCheck }}"  spinner type="submit">
                                                          {{__('Add to cart')}}
                                                      </x-tomato-admin-submit>
-                                                     <x-tomato-admin-submit v-else disabled spinner type="submit" >
+                                                     <x-tomato-admin-submit v-else disabled spinner type="submit" class="disabled:bg-gray-500 disabled:text-gray-200" >
                                                          {{__('Add to cart')}}
                                                      </x-tomato-admin-submit>
 
-                                                     @if(wishlist($product->id))
-                                                         <x-tomato-admin-button danger href="{{route('profile.wishlist.store')}}" method="POST" data="{product_id: '{{$product->id}}'}">
-                                                             <div class="flex flex-col items-center justify-center">
-                                                                 <i class="bx bxs-heart"></i>
-                                                             </div>
-                                                             <div>
-                                                                 {{__('Remove from Wishlist')}}
-                                                             </div>
-                                                         </x-tomato-admin-button>
-                                                     @else
-                                                         <x-tomato-admin-button secondary href="{{route('profile.wishlist.store')}}" method="POST" data="{product_id: '{{$product->id}}'}">
-                                                             <div class="flex flex-col items-center justify-center">
-                                                                 <i class="bx bx-heart"></i>
-                                                             </div>
-                                                             <div>
-                                                                 {{__('Add to Wishlist')}}
-                                                             </div>
-                                                         </x-tomato-admin-button>
+                                                     @if(auth('accounts')->user())
+                                                         @if(wishlist($product->id))
+                                                             <x-tomato-admin-button danger href="{{route('profile.wishlist.store')}}" method="POST" data="{product_id: '{{$product->id}}'}">
+                                                                 <div class="flex flex-col items-center justify-center">
+                                                                     <i class="bx bxs-heart"></i>
+                                                                 </div>
+                                                                 <div>
+                                                                     {{__('Remove from Wishlist')}}
+                                                                 </div>
+                                                             </x-tomato-admin-button>
+                                                         @else
+                                                             <x-tomato-admin-button secondary href="{{route('profile.wishlist.store')}}" method="POST" data="{product_id: '{{$product->id}}'}">
+                                                                 <div class="flex flex-col items-center justify-center">
+                                                                     <i class="bx bx-heart"></i>
+                                                                 </div>
+                                                                 <div>
+                                                                     {{__('Add to Wishlist')}}
+                                                                 </div>
+                                                             </x-tomato-admin-button>
+                                                         @endif
                                                      @endif
                                                  </div>
                                              </div>
@@ -261,7 +264,7 @@
                                                      @endfor
                                                  </div>
                                                  <p class="sr-only">{{$product->rate}} {{__('out of 5 stars')}}</p>
-                                                 <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                                 <a href="#" class="ml-3 text-sm font-medium text-primary-600 hover:text-primary-500">
                                                      117 {{__('reviews')}}
                                                  </a>
                                              </div>
@@ -292,34 +295,39 @@
                                              @endif
 
                                          </div>
+
                                      </div>
 
                                  </div>
                              @endif
                          </x-splade-form>
+
+
+                         @if($product->description)
+                             <hr class="my-4"/>
+                             <div>
+                                 <h3 class="text-lg font-bold text-gray-900">{{__('Description')}}</h3>
+
+                                 <div class="my-4">
+                                     {!! $product->description !!}
+                                 </div>
+                             </div>
+                         @endif
+
+                         @if($product->details)
+                             <hr class="my-4"/>
+                             <div class="mt-10">
+                                 <h2 class="text-lg font-bold text-gray-900">{{__('Details')}}</h2>
+
+                                 <div class="my-4">
+                                     {!! $product->details !!}
+                                 </div>
+                             </div>
+                         @endif
                      </div>
 
                     <div class="py-4 col-span-12 mx-16">
 
-                        @if($product->description)
-                            <div>
-                                <h3 class="text-lg font-bold text-gray-900">{{__('Description')}}</h3>
-
-                                <div class="my-4">
-                                    {!! $product->description !!}
-                                </div>
-                            </div>
-                        @endif
-
-                        @if($product->details)
-                            <div class="mt-10">
-                                <h2 class="text-lg font-bold text-gray-900">{{__('Details')}}</h2>
-
-                                <div class="my-4">
-                                    {!! $product->details !!}
-                                </div>
-                            </div>
-                        @endif
                     </div>
                 </div>
 

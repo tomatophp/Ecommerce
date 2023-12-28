@@ -4,9 +4,15 @@
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web', 'splade'])->name('home.')->group(function() {
-    Route::get('/', [\Themes\Ecommerce\App\Http\Controllers\TomatoEcommerceController::class, 'index'])->name('index');
-    Route::post('/contact', [\Themes\Ecommerce\App\Http\Controllers\TomatoEcommerceController::class, 'contact'])->name('contact');
-    Route::post('/contact-form', [\Themes\Ecommerce\App\Http\Controllers\TomatoEcommerceController::class, 'form'])->name('form');
+    Route::get('/', [\Themes\Ecommerce\App\Http\Controllers\HomeController::class, 'index'])->name('index');
+    Route::get('/about', [\Themes\Ecommerce\App\Http\Controllers\HomeController::class, 'about'])->name('about');
+    Route::get('/faq', [\Themes\Ecommerce\App\Http\Controllers\HomeController::class, 'faq'])->name('faq');
+    Route::get('/contact', [\Themes\Ecommerce\App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
+    Route::get('/terms', [\Themes\Ecommerce\App\Http\Controllers\HomeController::class, 'terms'])->name('terms');
+    Route::get('/privacy', [\Themes\Ecommerce\App\Http\Controllers\HomeController::class, 'privacy'])->name('privacy');
+    Route::get('/returns', [\Themes\Ecommerce\App\Http\Controllers\HomeController::class, 'returns'])->name('returns');
+    Route::post('/contact', [\Themes\Ecommerce\App\Http\Controllers\HomeController::class, 'send'])->name('contact');
+    Route::post('/contact-form', [\Themes\Ecommerce\App\Http\Controllers\HomeController::class, 'form'])->name('form');
 });
 
 Route::middleware(['web', 'splade'])->prefix('shop')->name('shop.')->group(function() {
@@ -17,10 +23,6 @@ Route::middleware(['web', 'splade'])->prefix('shop')->name('shop.')->group(funct
 Route::middleware(['web', 'splade'])->prefix('blog')->name('blog.')->group(function() {
     Route::get('/', [\Themes\Ecommerce\App\Http\Controllers\BlogController::class, 'index'])->name('index');
     Route::get('/{slug}', [\Themes\Ecommerce\App\Http\Controllers\BlogController::class, 'post'])->name('post');
-});
-
-Route::middleware(['web', 'splade'])->prefix('faq')->name('faq.')->group(function() {
-    Route::get('/', [\Themes\Ecommerce\App\Http\Controllers\TomatoEcommerceController::class, 'faq'])->name('faq');
 });
 
 
@@ -57,7 +59,7 @@ Route::middleware(['web', 'splade'])->prefix('auth')->group(function() {
     Route::post('/otp', [\Themes\Ecommerce\App\Http\Controllers\AuthController::class, 'otpCheck'])->name('otp.check');
 });
 
-Route::middleware(['web', 'splade'])->prefix('profile')->name('profile.')->group(function() {
+Route::middleware(['web', 'splade', 'auth:accounts'])->prefix('profile')->name('profile.')->group(function() {
     Route::get('/', [\Themes\Ecommerce\App\Http\Controllers\ProfileController::class, 'index'])->name('index');
     Route::get('/edit', [\Themes\Ecommerce\App\Http\Controllers\ProfileController::class, 'edit'])->name('edit');
     Route::post('/update', [\Themes\Ecommerce\App\Http\Controllers\ProfileController::class, 'update'])->name('update');
@@ -66,13 +68,22 @@ Route::middleware(['web', 'splade'])->prefix('profile')->name('profile.')->group
     Route::get('/logout', [\Themes\Ecommerce\App\Http\Controllers\ProfileController::class, 'logout'])->name('logout');
 });
 
-Route::middleware(['web', 'splade'])->prefix('profile/wishlist')->name('profile.wishlist.')->group(function() {
+Route::middleware(['web', 'splade', 'auth:accounts'])->prefix('profile/wishlist')->name('profile.wishlist.')->group(function() {
     Route::get('/', [\Themes\Ecommerce\App\Http\Controllers\ProfileWishlistController::class, 'index'])->name('index');
     Route::post('/create', [\Themes\Ecommerce\App\Http\Controllers\ProfileWishlistController::class, 'store'])->name('store');
     Route::delete('/{wishlist}', [\Themes\Ecommerce\App\Http\Controllers\ProfileWishlistController::class, 'destroy'])->name('destroy');
 });
 
-Route::middleware(['web', 'splade'])->prefix('profile/address')->name('profile.address.')->group(function() {
+Route::middleware(['web', 'splade', 'auth:accounts'])->prefix('profile/notifications')->name('profile.notifications.')->group(function() {
+    Route::get('/', [\Themes\Ecommerce\App\Http\Controllers\ProfileNotificationsController::class, 'index'])->name('index');
+    Route::post('/read', [\Themes\Ecommerce\App\Http\Controllers\ProfileNotificationsController::class, 'read'])->name('read');
+    Route::delete('/clear', [\Themes\Ecommerce\App\Http\Controllers\ProfileNotificationsController::class, 'clearUser'])->name('clear');
+    Route::get('/{model}', [\Themes\Ecommerce\App\Http\Controllers\ProfileNotificationsController::class, 'show'])->name('show');
+    Route::post('/{model}', [\Themes\Ecommerce\App\Http\Controllers\ProfileNotificationsController::class, 'readSelected'])->name('read.selected');
+    Route::delete('/{model}', [\Themes\Ecommerce\App\Http\Controllers\ProfileNotificationsController::class, 'destroy'])->name('destroy');
+});
+
+Route::middleware(['web', 'splade', 'auth:accounts'])->prefix('profile/address')->name('profile.address.')->group(function() {
     Route::get('/', [\Themes\Ecommerce\App\Http\Controllers\ProfileAddressController::class, 'index'])->name('index');
     Route::get('/create', [\Themes\Ecommerce\App\Http\Controllers\ProfileAddressController::class, 'create'])->name('create');
     Route::post('/create', [\Themes\Ecommerce\App\Http\Controllers\ProfileAddressController::class, 'store'])->name('store');
@@ -83,7 +94,7 @@ Route::middleware(['web', 'splade'])->prefix('profile/address')->name('profile.a
     Route::delete('/{address}', [\Themes\Ecommerce\App\Http\Controllers\ProfileAddressController::class, 'destroy'])->name('destroy');
 });
 
-Route::middleware(['web', 'splade'])->prefix('profile/orders')->name('profile.orders.')->group(function() {
+Route::middleware(['web', 'splade', 'auth:accounts'])->prefix('profile/orders')->name('profile.orders.')->group(function() {
     Route::get('/', [\Themes\Ecommerce\App\Http\Controllers\ProfileOrdersController::class, 'index'])->name('index');
     Route::get('/{order}/show', [\Themes\Ecommerce\App\Http\Controllers\ProfileOrdersController::class, 'show'])->name('show');
     Route::get('/{order}/print', [\Themes\Ecommerce\App\Http\Controllers\ProfileOrdersController::class, 'print'])->name('print');
@@ -91,7 +102,7 @@ Route::middleware(['web', 'splade'])->prefix('profile/orders')->name('profile.or
 });
 
 
-Route::middleware(['web', 'splade'])->prefix('profile/wallet')->name('profile.wallet.')->group(function() {
+Route::middleware(['web', 'splade', 'auth:accounts'])->prefix('profile/wallet')->name('profile.wallet.')->group(function() {
     Route::get('/', [\Themes\Ecommerce\App\Http\Controllers\ProfileWalletController::class, 'index'])->name('index');
     Route::get('/create', [\Themes\Ecommerce\App\Http\Controllers\ProfileWalletController::class, 'create'])->name('create');
     Route::post('/create', [\Themes\Ecommerce\App\Http\Controllers\ProfileWalletController::class, 'store'])->name('store');

@@ -36,7 +36,7 @@ class BlogController extends Controller
         $posts = $posts->where('activated', true)->orderBy('id', 'desc')
                         ->paginate(12);
 
-        return view('themes::blog.index', [
+        return view('themes::index', [
             "categories" => Category::where('for', 'category')->get(),
             "posts" =>  $posts,
             'page' => $page,
