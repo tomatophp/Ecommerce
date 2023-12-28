@@ -14,8 +14,14 @@ use TomatoPHP\TomatoProducts\Models\Product;
 class ShopController extends Controller
 {
     public function index(Request $request){
-        $page = Page::where('slug', 'shop')->first();
-
+        $page = Page::where('slug', '/shop')->first();
+        if(!$page){
+            $page = new Page();
+            $page->title = 'Shop';
+            $page->slug = '/shop';
+            $page->is_active = true;
+            $page->save();
+        }
         $products = Product::query();
 
         if($request->has('search')){
