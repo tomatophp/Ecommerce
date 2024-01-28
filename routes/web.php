@@ -44,7 +44,7 @@ Route::middleware(['web', 'splade'])->name('cart.')->group(function() {
     Route::delete('/cart/{cart}', [\Themes\Ecommerce\App\Http\Controllers\CheckoutController::class, 'destroy'])->name('destroy');
 });
 
-Route::middleware(['web', 'splade'])->prefix('auth')->group(function() {
+Route::middleware(['web', 'splade'])->name('accounts.')->group(function() {
     Route::get('/login', [\Themes\Ecommerce\App\Http\Controllers\AuthController::class, 'login'])->name('login');
     Route::post('/login', [\Themes\Ecommerce\App\Http\Controllers\AuthController::class, 'check'])->name('login.check');
     Route::get('/register', [\Themes\Ecommerce\App\Http\Controllers\AuthController::class, 'register'])->name('register');

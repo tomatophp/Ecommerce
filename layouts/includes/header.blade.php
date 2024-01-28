@@ -7,7 +7,7 @@
             @if(setting('site_logo'))
                 <img src="{{setting('site_logo')}}" class="h-8" />
             @else
-                <x-application-logo class="w-8 h-8"/>
+                <x-tomato-application-logo class="w-8 h-8"/>
             @endif
 
         </x-splade-link>
@@ -164,14 +164,14 @@
                         <div class="sm:flex sm:gap-4">
                             <x-splade-link
                                 class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"
-                                :href="route('login')"
+                                :href="route('accounts.login')"
                             >
                                 {{__('Login')}}
                             </x-splade-link>
 
                             <x-splade-link
                                 class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block"
-                                :href="route('register')"
+                                :href="route('accounts.register')"
                             >
                                 {{__('Register')}}
                             </x-splade-link>

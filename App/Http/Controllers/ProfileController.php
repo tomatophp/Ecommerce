@@ -100,7 +100,7 @@ class ProfileController extends Controller
         );
         if($logout->success){
             Toast::success($logout->message)->autoDismiss(2);
-            return redirect()->route('login');
+            return redirect()->route('accounts.login');
         }
     }
 }

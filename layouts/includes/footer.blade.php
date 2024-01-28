@@ -4,7 +4,7 @@
             @if(setting('site_logo'))
             <img src="{{setting('site_logo')}}" class="h-16" />
             @else
-                <x-application-logo class="h-16"/>
+                <x-tomato-application-logo class="h-16"/>
             @endif
         </div>
 
