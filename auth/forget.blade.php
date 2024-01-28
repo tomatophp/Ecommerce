@@ -32,7 +32,7 @@
                         {{ __('Please input your email to change password')  }}
                     </p>
 
-                    <x-splade-form action="{{route('forget.email')}}" class="mt-8 grid grid-cols-6 gap-6">
+                    <x-splade-form action="{{route('accounts.forget.email')}}" class="mt-8 grid grid-cols-6 gap-6">
 
                         <div class="col-span-6">
                             <label for="Email" class="block text-sm font-medium text-gray-700">
@@ -56,7 +56,7 @@
 
                             <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                                 Don't have an account?
-                                <x-splade-link href="{{route('register')}}" class="text-gray-700 underline">Register</x-splade-link>.
+                                <x-splade-link href="{{route('accounts.register')}}" class="text-gray-700 underline">Register</x-splade-link>.
                             </p>
 
                         </div>

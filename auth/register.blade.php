@@ -32,7 +32,7 @@
                         {{ __('Please fill all fields to register a new account')  }}
                     </p>
 
-                    <x-splade-form action="{{route('register.store')}}" class="mt-8 grid grid-cols-6 gap-6">
+                    <x-splade-form action="{{route('accounts.register.store')}}" class="mt-8 grid grid-cols-6 gap-6">
                         <div class="col-span-6">
                             <label
                                 for="Name"
@@ -139,7 +139,7 @@
 
                             <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                                 {{__('Already have an account?')}}
-                                <x-splade-link href="{{route('login')}}" class="text-gray-700 underline">{{__('Log in')}}</x-splade-link>.
+                                <x-splade-link href="{{route('accounts.login')}}" class="text-gray-700 underline">{{__('Log in')}}</x-splade-link>.
                             </p>
                         </div>
                     </x-splade-form>

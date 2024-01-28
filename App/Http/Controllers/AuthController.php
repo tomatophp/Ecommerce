@@ -51,7 +51,7 @@ class AuthController extends Controller
                 Toast::danger($login->message)->autoDismiss(2);
                 session()->put('email', $request->get('email'));
                 TomatoAuth::resend($request, 'web');
-                return redirect()->route('otp');
+                return redirect()->route('accounts.otp');
             }
             else {
                 Toast::danger($login->message)->autoDismiss(2);
@@ -74,7 +74,7 @@ class AuthController extends Controller
             session()->put('email', $request->get('email'));
 
             Toast::success($register->message)->autoDismiss(2);
-            return redirect()->route('otp');
+            return redirect()->route('accounts.otp');
         }
         else {
             Toast::danger($register->message)->autoDismiss(2);
@@ -112,7 +112,7 @@ class AuthController extends Controller
             session()->put('email', $request->get('email'));
 
             Toast::success($reset->message)->autoDismiss(2);
-            return redirect()->route('reset');
+            return redirect()->route('accounts.reset');
         }
         else {
             Toast::danger($reset->message)->autoDismiss(2);
@@ -140,7 +140,7 @@ class AuthController extends Controller
                 session()->put('otp', $request->get('otp_code'));
 
                 Toast::success(__('Your Otp is correct your account is active now'))->autoDismiss(2);
-                return redirect()->route('login');
+                return redirect()->route('accounts.login');
             }
             else {
                 Toast::danger($checkOtp->message)->autoDismiss(2);
@@ -148,7 +148,7 @@ class AuthController extends Controller
             }
         }
         else {
-            return redirect()->route('forget');
+            return redirect()->route('accounts.forget');
         }
 
     }
@@ -162,7 +162,7 @@ class AuthController extends Controller
             session()->forget('email');
 
             Toast::success($reset->message)->autoDismiss(2);
-            return redirect()->route('login');
+            return redirect()->route('accounts.login');
         }
         else {
             Toast::danger($reset->message)->autoDismiss(2);

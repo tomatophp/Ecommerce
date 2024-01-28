@@ -32,7 +32,7 @@
                         {{ __('Please input code you got on your email and your new password')  }}
                     </p>
 
-                    <x-splade-form action="{{route('reset.submit')}}" class="mt-8 grid grid-cols-6 gap-6">
+                    <x-splade-form action="{{route('accounts.reset.submit')}}" class="mt-8 grid grid-cols-6 gap-6">
                         <div class="col-span-6">
                             <x-splade-input
                                 label="{{__('OTP')}}"
@@ -66,7 +66,7 @@
 
                             <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                                 {{__("Don't get the code?")}}
-                                <x-splade-link href="{{route('otp.resend')}}" class="text-gray-700 underline" method="POST">{{__('Resend')}}</x-splade-link>.
+                                <x-splade-link href="{{route('accounts.otp.resend')}}" class="text-gray-700 underline" method="POST">{{__('Resend')}}</x-splade-link>.
                             </p>
 
                         </div>

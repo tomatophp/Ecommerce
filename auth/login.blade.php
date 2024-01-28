@@ -32,7 +32,7 @@
                         {{ __('Please login to your account to continue')  }}
                     </p>
 
-                    <x-splade-form action="{{route('login.check')}}" class="mt-8 grid grid-cols-6 gap-6">
+                    <x-splade-form action="{{route('accounts.login.check')}}" class="mt-8 grid grid-cols-6 gap-6">
 
                         <div class="col-span-6">
                             <label for="Email" class="block text-sm font-medium text-gray-700">
@@ -84,9 +84,9 @@
 
                             <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                                 Don't have an account?
-                                <x-splade-link href="{{route('register')}}" class="text-gray-700 underline">Register</x-splade-link>.
+                                <x-splade-link href="{{route('accounts.register')}}" class="text-gray-700 underline">Register</x-splade-link>.
                                 lose your password?
-                                <x-splade-link href="{{route('forget')}}" class="text-gray-700 underline">Reset Password</x-splade-link>.
+                                <x-splade-link href="{{route('accounts.forget')}}" class="text-gray-700 underline">Reset Password</x-splade-link>.
                             </p>
 
                         </div>
